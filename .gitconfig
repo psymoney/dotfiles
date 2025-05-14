@@ -14,3 +14,7 @@
 	lg = log --pretty='%C(yellow)%h%Creset %C(cyan)%<(12,trunc)%an%Creset %C(green)%ad%Creset %C(red)%d%Creset %s' --date=format:'%Y-%m-%d %H:%M:%S'
 	b = branch
 	co = checkout
+  s = status
+  p = push
+  c = commit
+  a = add
