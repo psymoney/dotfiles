@@ -73,10 +73,8 @@ ZSH_THEME="agnoster"
 plugins=(
   git
   poetry
-  zsh-autosuggestions 
-  zsh-syntax-highlighting 
-  fast-syntax-highlighting 
-  zsh-autocomplete
+  z
+  colored-man-pages
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -133,3 +131,5 @@ alias zsh-config="vim ~/.zshrc"
 alias zsh-reload="source ~/.zshrc"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias df='dotfiles'
+alias d='docker'
+alias dc='docker compose'
