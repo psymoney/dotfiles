@@ -1,0 +1,22 @@
+[user]
+  email = sangykimiv@gmail.com
+  name = Sangyeop Kim
+[core]
+  editor = nvim
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[pretty]
+  ol = %h%x09%an%x09%ad%x09%s
+[log]
+  date = format:%Y-%m-%d %H:%M:%S
+[alias]
+  lg = log --pretty='%C(yellow)%h%Creset %C(cyan)%<(12,trunc)%an%Creset %C(green)%ad%Creset %C(red)%d%Creset %s' --date=format:'%Y-%m-%d %H:%M:%S'
+  b = branch
+  co = checkout
+  s = status
+  p = push
+  c = commit
+  a = add
