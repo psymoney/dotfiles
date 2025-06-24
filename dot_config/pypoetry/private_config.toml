@@ -1,0 +1,11 @@
+[virtualenvs]
+in-project = true
+
+[repositories.pypi-mirror]
+url = "https://pypi-mirror.smartguardzone.kr/lib/dev/"
+
+[repositories.lib]
+url = "https://lib.parkingwith.com/repository/private/"
+
+[repositories.private]
+url = "https://lib.parkingwith.com/repository/private/"
