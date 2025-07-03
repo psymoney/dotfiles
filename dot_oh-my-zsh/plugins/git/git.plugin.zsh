@@ -167,13 +167,9 @@ alias gcl='git clone --recurse-submodules'
 alias gclf='git clone --recursive --shallow-submodules --filter=blob:none --also-filter-submodules'
 
 function gco() {
-  if [[ $# -eq 1 ]]; then
-    git checkout "$1"
+  if [[ $# -gt 0 ]]; then
+    git checkout "$@"
     return
-  fi
-  if [[ $# -gt 1 ]]; then
-    print -u 2 "gco takes at most one argument, got $#"
-    return 1
   fi
   local branch
   branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/ | sort -u | fzf) || return
