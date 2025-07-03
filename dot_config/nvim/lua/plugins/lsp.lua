@@ -2,8 +2,12 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
+    dependencies = {
+      "mason.nvim",
+      { "mason-org/mason-lspconfig.nvim", config = function() end },
+    },
     opts = {
+      -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
         -- pyright will be automatically installed with mason and loaded with lspconfig
@@ -23,8 +27,22 @@ return {
               client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
             end
           end,
+          settings = {
+            python = {
+              venvPath = ".",
+              venv = ".venv",
+              analysis = {
+                typeCheckingMode = "basic",
+                diagnosticMode = "workspace",
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
         },
       },
+
+      --- @type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
       setup = {
         -- 모든 LSP 서버 공통 on_attach
         ["*"] = function(_, opts)
