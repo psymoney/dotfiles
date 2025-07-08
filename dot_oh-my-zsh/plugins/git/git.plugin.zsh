@@ -173,7 +173,20 @@ function gco() {
   fi
   local branch
   branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/ | sort -u | fzf) || return
-  [ -n "$branch" ] && git checkout "$branch"
+
+  # 브랜치가 선택되지 않았다면 종료
+  [ -n "$branch" ] || return
+
+  # 선택된 브랜치가 원격 브랜치인지 확인 (예: origin/main)
+  if [[ "$branch" =~ ^origin/ ]]; then
+    # 원격 브랜치 이름에서 'origin/' 부분을 제거하여 새 로컬 브랜치 이름 생성
+    local local_branch_name="${branch#origin/}"
+    echo "Creating and checking out new local branch: $local_branch_name from $branch"
+    git checkout -b "$local_branch_name" "$branch"
+  else
+    # 로컬 브랜치인 경우 기존과 같이 체크아웃
+    git checkout "$branch"
+  fi
 }
 
 function gccd() {
