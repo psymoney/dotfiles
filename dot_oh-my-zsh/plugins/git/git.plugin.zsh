@@ -125,8 +125,53 @@ alias gbss='git bisect start'
 alias gbl='git blame -w'
 alias gb='git branch'
 alias gba='git branch --all'
-alias gbd='git branch --delete'
+# alias gbd='git branch --delete'
 alias gbD='git branch --delete --force'
+
+function gbd() {
+  echo "$(fzf --version)"
+  local selected_branches
+  local fzf_options="--multi"
+
+  if [[ "$#" -gt 0 ]]; then
+    if [[ "$1" == "-a" ]]; then
+      shift
+      # 모든 브랜치 (로컬 및 원격) 표시
+      selected_branches=$(git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/ | sort -u | fzf $fzf_options)
+    else
+      # 인자가 제공되면 git branch -d에 그대로 전달
+      git branch -d "$@"
+      return
+    fi
+  else
+    # 인자가 없으면 로컬 브랜치만 표시
+    selected_branches=$(git for-each-ref --format='%(refname:short)' refs/heads/ | sort -u | fzf $fzf_options)
+  fi
+
+  # 브랜치가 선택되지 않았다면 종료
+  if [[ -z "$selected_branches" ]]; then
+    echo "No branches selected."
+    return
+  fi
+
+  # 선택된 각 브랜치에 대해 삭제 명령 실행
+  for branch in ${(ps:\n:)selected_branches}; do
+    # 원격 브랜치인 경우 
+    if [[ "$branch" =~ ^remotes/ ]]; then
+      echo "DO NOT DELETE REMOTE BRANCHES!"
+      return
+
+      local remote_name="${branch%%/*}" # remotes/origin -> remotes
+      local remote_branch_name="${branch#remotes/*/}" # remotes/origin/main -> main
+      echo "Deleting remote branch: $remote_branch_name from $remote_name"
+      git push "${remote_name#remotes/}" ":$remote_branch_name" # remove 'remotes/' prefix
+    else
+      # 로컬 브랜치인 경우
+      echo "Deleting local branch: $branch"
+      git branch -d "$branch"
+    fi
+  done
+}
 
 function gbda() {
   git branch --no-color --merged | command grep -vE "^([+*]|\s*($(git_main_branch)|$(git_develop_branch))\s*$)" | command xargs git branch --delete 2>/dev/null
