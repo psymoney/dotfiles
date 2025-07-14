@@ -33,7 +33,7 @@ return {
               venv = ".venv",
               analysis = {
                 typeCheckingMode = "basic",
-                diagnosticMode = "workspace",
+                diagnosticMode = "openFilesOnly",
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
               },
