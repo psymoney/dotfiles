@@ -7,6 +7,7 @@ return {
       { "mason-org/mason-lspconfig.nvim", config = function() end },
     },
     opts = {
+      autoformat = false,
       -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
